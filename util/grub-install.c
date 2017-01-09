@@ -313,7 +313,11 @@ get_default_platform (void)
 #elif defined (__sparc__) || defined (__sparc64__)
    return "sparc64-ieee1275";
 #elif defined (__MIPSEL__)
+#if _MIPS_SIM == _ABI64
+   return "mips64el-efi";
+#else
    return "mipsel-loongson";
+#endif
 #elif defined (__MIPSEB__)
    return "mips-arc";
 #elif defined (__ia64__)
@@ -488,6 +492,7 @@ have_bootdev (enum grub_install_plat pl)
     case GRUB_INSTALL_PLATFORM_ARM_EFI:
     case GRUB_INSTALL_PLATFORM_ARM64_EFI:
     case GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI:
+    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV64_EFI:
     case GRUB_INSTALL_PLATFORM_I386_IEEE1275:
@@ -927,6 +932,7 @@ main (int argc, char *argv[])
     case GRUB_INSTALL_PLATFORM_ARM_EFI:
     case GRUB_INSTALL_PLATFORM_ARM64_EFI:
     case GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI:
+    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV64_EFI:
     case GRUB_INSTALL_PLATFORM_IA64_EFI:
@@ -975,6 +981,7 @@ main (int argc, char *argv[])
     case GRUB_INSTALL_PLATFORM_ARM_EFI:
     case GRUB_INSTALL_PLATFORM_ARM64_EFI:
     case GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI:
+    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV64_EFI:
     case GRUB_INSTALL_PLATFORM_IA64_EFI:
@@ -1031,6 +1038,7 @@ main (int argc, char *argv[])
     case GRUB_INSTALL_PLATFORM_ARM_EFI:
     case GRUB_INSTALL_PLATFORM_ARM64_EFI:
     case GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI:
+    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV64_EFI:
     case GRUB_INSTALL_PLATFORM_IA64_EFI:
@@ -1168,6 +1176,9 @@ main (int argc, char *argv[])
 	    case GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI:
 	      efi_file = "BOOTLOONGARCH64.EFI";
 	      break;
+	    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
+	      efi_file = "BOOTMIPS64EL.EFI";
+	      break;
 	    case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
 	      efi_file = "BOOTRISCV32.EFI";
 	      break;
@@ -1203,6 +1214,9 @@ main (int argc, char *argv[])
 	      break;
 	    case GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI:
 	      efi_file = "grubloongarch64.efi";
+	      break;
+	    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
+	      efi_file = "grubmips64el.efi";
 	      break;
 	    case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
 	      efi_file = "grubriscv32.efi";
@@ -1515,6 +1529,7 @@ main (int argc, char *argv[])
 		  case GRUB_INSTALL_PLATFORM_ARM_EFI:
 		  case GRUB_INSTALL_PLATFORM_ARM64_EFI:
 		  case GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI:
+		  case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
 		  case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
 		  case GRUB_INSTALL_PLATFORM_RISCV64_EFI:
 		  case GRUB_INSTALL_PLATFORM_IA64_EFI:
@@ -1611,6 +1626,7 @@ main (int argc, char *argv[])
     case GRUB_INSTALL_PLATFORM_ARM_EFI:
     case GRUB_INSTALL_PLATFORM_ARM64_EFI:
     case GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI:
+    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV64_EFI:
     case GRUB_INSTALL_PLATFORM_IA64_EFI:
@@ -1717,6 +1733,7 @@ main (int argc, char *argv[])
     case GRUB_INSTALL_PLATFORM_ARM_EFI:
     case GRUB_INSTALL_PLATFORM_ARM64_EFI:
     case GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI:
+    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV64_EFI:
     case GRUB_INSTALL_PLATFORM_IA64_EFI:
@@ -1973,6 +1990,7 @@ main (int argc, char *argv[])
     case GRUB_INSTALL_PLATFORM_ARM_EFI:
     case GRUB_INSTALL_PLATFORM_ARM64_EFI:
     case GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI:
+    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
     case GRUB_INSTALL_PLATFORM_RISCV64_EFI:
     case GRUB_INSTALL_PLATFORM_IA64_EFI:
