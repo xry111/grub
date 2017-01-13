@@ -616,6 +616,21 @@ grub_efi_mm_add_regions (grub_size_t required_bytes, unsigned int flags)
   filtered_memory_map_end = filter_memory_map (memory_map, filtered_memory_map,
 					       desc_size, memory_map_end);
 
+#if 0 // ????
+  /* By default, request a quarter of the available memory.  */
+  total_pages = get_total_pages (filtered_memory_map, desc_size,
+				 filtered_memory_map_end);
+#if defined (__mips__) && (_MIPS_SIM == _ABI64)
+  required_pages = (total_pages >> 1);
+#else
+  required_pages = (total_pages >> 2);
+#endif
+  if (required_pages < BYTES_TO_PAGES (MIN_HEAP_SIZE))
+    required_pages = BYTES_TO_PAGES (MIN_HEAP_SIZE);
+  else if (required_pages > BYTES_TO_PAGES (MAX_HEAP_SIZE))
+    required_pages = BYTES_TO_PAGES (MAX_HEAP_SIZE);
+#endif
+
   /* Sort the filtered descriptors, so that GRUB can allocate pages
      from smaller regions.  */
   sort_memory_map (filtered_memory_map, desc_size, filtered_memory_map_end);
