@@ -371,25 +371,14 @@ grub_efi_loongson_smbios_table *
 grub_efi_loongson_get_smbios_table (void)
 {
   static grub_efi_loongson_smbios_table *smbios_table;
-  grub_efi_configuration_table_t *tables;
-  grub_efi_guid_t smbios_guid = GRUB_EFI_LOONGSON_SMBIOS_TABLE_GUID;
-  unsigned int i;
+  grub_efi_loongson_boot_params *boot_params;
 
-  if (smbios_table)
-    return smbios_table;
+  if(smbios_table)
+	return smbios_table;
 
-  /* Look for Loongson SMBIOS in UEFI config tables. */
-  tables = grub_efi_system_table->configuration_table;
+  boot_params = grub_efi_loongson_get_boot_params();
 
-  for (i = 0; i < grub_efi_system_table->num_table_entries; i++)
-    if (grub_memcmp (&tables[i].vendor_guid, &smbios_guid, sizeof (smbios_guid)) == 0)
-      {
-        smbios_table = tables[i].vendor_table;
-        grub_dprintf ("loongson", "found registered SMBIOS @ %p\n", smbios_table);
-        break;
-      }
-
-  return smbios_table;
+  return &boot_params->efi.smbios;
 }
 
 int
@@ -398,26 +387,27 @@ grub_efi_is_loongson (void)
   return grub_efi_loongson_get_smbios_table () ? 1 : 0;
 }
 
-grub_efi_loongson_boot_params *
-grub_efi_loongson_get_boot_params (grub_efi_memory_descriptor_t *mmap_buf,
-                                   grub_efi_uintn_t mmap_size,
-                                   grub_efi_uintn_t desc_size)
+grub_efi_loongson_boot_params*
+grub_efi_loongson_get_boot_params (void)
 {
-  grub_efi_loongson_smbios_table *smbios_table;
+  static grub_efi_loongson_boot_params *boot_params;
+  grub_efi_configuration_table_t *tables;
+  grub_efi_guid_t smbios_guid = GRUB_EFI_LOONGSON_SMBIOS_TABLE_GUID;
+  unsigned int i;
 
-  smbios_table = grub_efi_loongson_get_smbios_table ();
-  if (!smbios_table)
-    grub_fatal ("cannot found Loongson SMBIOS!");
+  if (boot_params)
+    return boot_params;
 
-  grub_efi_loongson_init_reset_system ();
-  grub_efi_loongson_init_smbios (smbios_table);
-  grub_efi_loongson_init_cpu_info (smbios_table);
-  grub_efi_loongson_init_system_info (smbios_table);
-  grub_efi_loongson_init_irq_src_routing_table (smbios_table);
-  grub_efi_loongson_init_interface_info (smbios_table);
-  grub_efi_loongson_init_special_attribute (smbios_table);
-  grub_efi_loongson_init_board_devices (smbios_table);
-  grub_efi_loongson_init_memory_map (smbios_table, mmap_buf, mmap_size, desc_size);
+  /* Look for Loongson SMBIOS in UEFI config tables. */
+  tables = grub_efi_system_table->configuration_table;
 
-  return &loongson_boot_params->boot_params;
+  for (i = 0; i < grub_efi_system_table->num_table_entries; i++)
+    if (grub_memcmp (&tables[i].vendor_guid, &smbios_guid, sizeof (smbios_guid)) == 0)
+      {
+        boot_params= tables[i].vendor_table;
+        grub_dprintf ("loongson", "found registered SMBIOS @ %p\n", boot_params);
+        break;
+      }
+
+  return boot_params;
 }

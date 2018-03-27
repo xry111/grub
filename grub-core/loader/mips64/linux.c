@@ -102,20 +102,25 @@ static grub_err_t
 grub_linux_boot (void)
 {
   struct grub_relocator64_state state;
+  grub_efi_loongson_boot_params *boot_params;
 
   grub_memset (&state, 0, sizeof (state));
 
   /* Boot the kernel.  */
   state.gpr[1] = entry_addr;
-
+  grub_dprintf("loongson", "entry_addr is %p\n", __func__,state.gpr[1]);
   state.gpr[4] = linux_argc;
+  grub_dprintf("loongson", "linux_argc is %d\n", __func__,state.gpr[4]);
   state.gpr[5] = (grub_addr_t) linux_args_addr;
+  grub_dprintf("loongson", "args_addr is %p\n", __func__,state.gpr[5]);
+  boot_params = grub_efi_loongson_get_boot_params();
+  state.gpr[6] = (grub_uint64_t) boot_params;
+  grub_dprintf("loongson", "boot_params is %p\n", __func__,state.gpr[6]);
   if (grub_efi_is_loongson ())
     {
       grub_efi_uintn_t mmap_size;
       grub_efi_uintn_t desc_size;
       grub_efi_memory_descriptor_t *mmap_buf;
-      grub_efi_loongson_boot_params *boot_params;
       grub_err_t err;
 
       mmap_size = find_mmap_size ();
@@ -128,9 +133,6 @@ grub_linux_boot (void)
 				           &desc_size, NULL);
       if (err)
         return err;
-
-      boot_params = grub_efi_loongson_get_boot_params (mmap_buf, mmap_size, desc_size);
-      state.gpr[6] = (grub_uint64_t) boot_params;
     }
   state.jumpreg = 1;
   grub_relocator64_boot (relocator, state);
@@ -192,6 +194,7 @@ grub_linux_load64 (grub_elf_t elf, const char *filename)
 
   /* Linux's entry point incorrectly contains a virtual address.  */
   entry_addr = elf->ehdr.ehdr64.e_entry;
+  grub_dprintf("loongson", "entry address = %p\n", entry_addr);
 
   linux_size = grub_elf64_size (elf, &base, 0);
   if (linux_size == 0)
@@ -320,6 +323,20 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 
   *linux_argv = 0;
 
+  //wake up other core
+  {
+	  __asm__(
+			  "dli  $8, 0x900000003ff01000\n\t"
+			  "dli  $11, 0      \n\t"
+			  "dsll $11, 8      \n\t"
+			  "or   $8, $8,$11  \n\t"
+			  "li   $9, 0x5a5a \n\t"
+			  "sw   $9, 32($8) \n\t"
+			  "nop             \n\t"
+			  :
+			  :
+			 );
+  }
   grub_loader_set (grub_linux_boot, grub_linux_unload, 0);
   initrd_loaded = 0;
   loaded = 1;

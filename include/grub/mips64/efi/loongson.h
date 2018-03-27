@@ -253,8 +253,6 @@ grub_efi_loongson_smbios_table * grub_efi_loongson_get_smbios_table (void);
 int EXPORT_FUNC(grub_efi_is_loongson) (void);
 
 grub_efi_loongson_boot_params *
-EXPORT_FUNC(grub_efi_loongson_get_boot_params) (grub_efi_memory_descriptor_t *mmap_buf,
-                                                grub_efi_uintn_t mmap_size,
-                                                grub_efi_uintn_t desc_size);
+EXPORT_FUNC(grub_efi_loongson_get_boot_params) (void);
 
 #endif /* ! GRUB_EFI_LOONGSON_HEADER */
