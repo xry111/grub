@@ -26,12 +26,15 @@ grub_efi_loongson_init (void)
 {
   grub_efi_loongson_smbios_table *smbios_table;
   grub_efi_loongson_cpu_info *cpu_info;
+  grub_efi_loongson_params *lp;
 
   smbios_table = grub_efi_loongson_get_smbios_table ();
   if (!smbios_table)
     grub_fatal ("cannot found Loongson SMBIOS!");
 
-  cpu_info = (grub_efi_loongson_cpu_info *) smbios_table->lp.cpu_offset;
+  lp = &smbios_table->lp;
+
+  cpu_info = (grub_efi_loongson_cpu_info *)(lp + lp->cpu_offset);
   grub_dprintf ("loongson", "cpu clock %u\n", cpu_info->cpu_clock_freq);
 
   grub_timer_init (cpu_info->cpu_clock_freq);
