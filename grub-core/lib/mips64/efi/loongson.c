@@ -378,7 +378,7 @@ grub_efi_loongson_get_smbios_table (void)
 
   boot_params = grub_efi_loongson_get_boot_params();
 
-  return &boot_params->efi.smbios;
+  return boot_params ? &boot_params->efi.smbios : 0;
 }
 
 int
