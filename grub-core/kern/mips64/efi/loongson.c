@@ -34,7 +34,7 @@ grub_efi_loongson_init (void)
 
   lp = &smbios_table->lp;
 
-  cpu_info = (grub_efi_loongson_cpu_info *)(lp + lp->cpu_offset);
+  cpu_info = (grub_efi_loongson_cpu_info *)((grub_addr_t)lp + lp->cpu_offset);
   grub_dprintf ("loongson", "cpu clock %u\n", cpu_info->cpu_clock_freq);
 
   grub_timer_init (cpu_info->cpu_clock_freq);
