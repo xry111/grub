@@ -42,7 +42,8 @@ grub_map_memory (grub_phys_addr_t a, grub_size_t size)
 {
   if ((a + size) < 0x20000000UL)
     return (void *) (a | 0xffffffff80000000UL);
-  return (void *) (a | 0x9800000000000000UL);
+//  return (void *) (a | 0x9800000000000000UL);
+    return (void *) ((a&0x8fffffff) | 0xffffffff00000000UL);
 }
 
 static inline void
