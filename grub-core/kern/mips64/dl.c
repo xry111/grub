@@ -139,7 +139,7 @@ grub_arch_dl_relocate_symbols (grub_dl_t mod, void *ehdr,
 	  {
 	    return grub_error (GRUB_ERR_NOT_IMPLEMENTED_YET,
 			       N_("relocation 0x%x is not implemented yet"),
-			       ELF_R_TYPE (r_info));
+			       (int) ELF_R_TYPE (r_info));
 	  }
 	  break;
 	}
