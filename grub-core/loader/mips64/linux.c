@@ -231,7 +231,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   if (argc == 0)
     return grub_error (GRUB_ERR_BAD_ARGUMENT, N_("filename expected"));
 
-  elf = grub_elf_open (argv[0]);
+  elf = grub_elf_open (argv[0], GRUB_FILE_TYPE_LINUX_KERNEL);
   if (! elf)
     return grub_errno;
 
@@ -363,7 +363,7 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
     initrd_dest = get_virtual_current_address (ch);
   }
 
-  if (grub_initrd_load (&initrd_ctx, argv, initrd_dest))
+  if (grub_initrd_load (&initrd_ctx, initrd_dest))
     goto fail;
 
   grub_snprintf ((char *) linux_args_addr + rd_addr_arg_off,
