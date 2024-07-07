@@ -30,6 +30,7 @@
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wsign-compare"
+#pragma GCC diagnostic ignored "-Wunused-value"
 
 #define yyalloc(size, scanner)   (grub_malloc((size)))
 #define yyfree(ptr, scanner)   (grub_free((ptr)))
