@@ -42,6 +42,7 @@ static struct
   grub_efi_loongson_board_devices board_devices;
 } *loongson_boot_params;
 
+#if 0
 static void
 grub_efi_loongson_init_reset_system (void)
 {
@@ -155,9 +156,6 @@ grub_efi_loongson_init_board_devices (grub_efi_loongson_smbios_table *smbios_tab
   grub_memcpy (dst, src, sizeof (grub_efi_loongson_board_devices));
   loongson_params->boarddev_table_offset = (grub_uint64_t) dst - (grub_uint64_t) loongson_params;
 }
-
-#define ADD_MEMORY_DESCRIPTOR(desc, size)	\
-  ((grub_efi_memory_descriptor_t *) ((char *) (desc) + (size)))
 
 static void
 grub_efi_loongson_init_memory_map (grub_efi_loongson_smbios_table *smbios_table,
@@ -289,10 +287,13 @@ grub_efi_loongson_init_memory_map (grub_efi_loongson_smbios_table *smbios_table,
       dst->nr_map ++;
     }
 }
+#endif
 
 #define BYTES_TO_PAGES(bytes)	(((bytes) + 0xfff) >> 12)
 #define SUB_MEMORY_DESCRIPTOR(desc, size)	\
   ((grub_efi_memory_descriptor_t *) ((char *) (desc) - (size)))
+#define ADD_MEMORY_DESCRIPTOR(desc, size)	\
+  ((grub_efi_memory_descriptor_t *) ((char *) (desc) + (size)))
 
 void
 grub_efi_loongson_alloc_boot_params (void)

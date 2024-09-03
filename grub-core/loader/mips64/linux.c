@@ -108,14 +108,14 @@ grub_linux_boot (void)
 
   /* Boot the kernel.  */
   state.gpr[1] = entry_addr;
-  grub_dprintf("loongson", "entry_addr is %p\n", state.gpr[1]);
+  grub_dprintf("loongson", "entry_addr is %lx\n", state.gpr[1]);
   state.gpr[4] = linux_argc;
-  grub_dprintf("loongson", "linux_argc is %d\n", state.gpr[4]);
+  grub_dprintf("loongson", "linux_argc is %ld\n", state.gpr[4]);
   state.gpr[5] = (grub_addr_t) linux_args_addr;
-  grub_dprintf("loongson", "args_addr is %p\n", state.gpr[5]);
+  grub_dprintf("loongson", "args_addr is %lx\n", state.gpr[5]);
   boot_params = grub_efi_loongson_get_boot_params();
   state.gpr[6] = (grub_uint64_t) boot_params;
-  grub_dprintf("loongson", "boot_params is %p\n", state.gpr[6]);
+  grub_dprintf("loongson", "boot_params is %lx\n", state.gpr[6]);
   if (grub_efi_is_loongson ())
     {
       grub_efi_uintn_t mmap_size;
@@ -194,7 +194,7 @@ grub_linux_load64 (grub_elf_t elf, const char *filename)
 
   /* Linux's entry point incorrectly contains a virtual address.  */
   entry_addr = elf->ehdr.ehdr64.e_entry;
-  grub_dprintf("loongson", "entry address = %p\n", entry_addr);
+  grub_dprintf("loongson", "entry address = %lx\n", entry_addr);
 
   linux_size = grub_elf64_size (elf, &base, 0);
   if (linux_size == 0)
