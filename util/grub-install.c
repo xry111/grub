@@ -1177,7 +1177,7 @@ main (int argc, char *argv[])
 	      efi_file = "BOOTLOONGARCH64.EFI";
 	      break;
 	    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
-	      efi_file = "BOOTMIPS64EL.EFI";
+	      efi_file = "BOOTMIPS.EFI";
 	      break;
 	    case GRUB_INSTALL_PLATFORM_RISCV32_EFI:
 	      efi_file = "BOOTRISCV32.EFI";
