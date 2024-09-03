@@ -1767,6 +1767,7 @@ module = {
   extra_dist = lib/arm64/setjmp.S;
   extra_dist = lib/riscv/setjmp.S;
   extra_dist = lib/loongarch64/setjmp.S;
+  extra_dist = lib/mips64/setjmp.S;
 };
 
 module = {
