@@ -393,7 +393,7 @@ grub_efi_loongson_get_boot_params (void)
 {
   static grub_efi_loongson_boot_params *boot_params;
   grub_efi_configuration_table_t *tables;
-  grub_efi_guid_t smbios_guid = GRUB_EFI_LOONGSON_SMBIOS_TABLE_GUID;
+  grub_guid_t smbios_guid = GRUB_EFI_LOONGSON_SMBIOS_TABLE_GUID;
   unsigned int i;
 
   if (boot_params)
